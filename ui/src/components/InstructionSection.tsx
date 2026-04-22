@@ -37,9 +37,9 @@ const instructions: Instruction[] = [
  */
 export default function InstructionSection() {
     return (
-        <section className="bg-background py-10 px-20">
+        <section className="bg-background py-10 px-0 md:px-20">
             <div>
-                <h2 className="text-primary-darker font-black text-2xl tracking-widest uppercase mb-10">
+                <h2 className="text-primary-darker font-black text-2xl tracking-widest uppercase mb-10 px-6 md:px-0">
                     HOW IT WORKS
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
