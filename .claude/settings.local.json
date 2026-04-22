@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(npx tsc *)",
+      "Bash(/Users/alidaeihagh/Desktop/SkiProject/ui/node_modules/.bin/tsc --noEmit -p /Users/alidaeihagh/Desktop/SkiProject/ui/tsconfig.json)"
     ]
   }
 }
