@@ -1,0 +1,16 @@
+# Video data and model assets
+data/
+output/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pt
+*.npy
+*.npz
+
+# macOS
+.DS_Store
+
+# Claude Code local config
+.claude/
