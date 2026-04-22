@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f4f4f4;
+  --color-text-primary: #466183;
+  --color-div-primary: #4471b3;
+  --color-primary-darker: #394c66;
+  --color-secondary: #9b9c9c;
+
+  --font-sans: "Montserrat", sans-serif;
+}
+
+body {
+  background-color: #f4f4f4;
+  box-sizing: border-box;
+}
+
+@utility bg-radial {
+  background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.5) 70%);
+}
+
+@utility bg-vignette {
+  background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.35) 70%, rgba(0,0,0,0.35) 100%);
+}
