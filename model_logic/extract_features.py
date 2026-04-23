@@ -140,6 +140,7 @@ def process_video(video_path: Path):
 
 # ── Main ─────────────────────────────────────────────────────────────────────────
 def main():
+    """Iterate over all labelled videos, extract sliding-window features, and save X.npy / y.npy / features.csv."""
     all_X, all_y = [], []
     csv_rows = []
 

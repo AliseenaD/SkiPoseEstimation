@@ -48,15 +48,19 @@ N_FEATURES = len(FEATURE_NAMES)   # 27
 
 # ── Geometry helpers ─────────────────────────────────────────────────────────────
 def line_angle(p1, p2):
+    """Return the angle in degrees of the line from p1 to p2, measured from the positive x-axis."""
     return math.degrees(math.atan2(p2[1] - p1[1], p2[0] - p1[0]))
 
 def angular_diff(a, b):
+    """Return the shortest unsigned difference between two angles in degrees (0–180)."""
     return abs((a - b + 180) % 360 - 180)
 
 def dist(p1, p2):
+    """Return the Euclidean distance between two (x, y) points."""
     return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
 
 def mid(p1, p2):
+    """Return the midpoint between two (x, y) points."""
     return ((p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2)
 
 
@@ -92,6 +96,7 @@ def extract_features(landmarks, cw, ch):
 
 # ── YOLO / tracker helpers ───────────────────────────────────────────────────────
 def create_csrt_tracker():
+    """Instantiate a CSRT tracker, trying multiple OpenCV API locations for compatibility."""
     for factory in [
         lambda: cv2.legacy.TrackerCSRT_create(),
         lambda: cv2.TrackerCSRT_create(),

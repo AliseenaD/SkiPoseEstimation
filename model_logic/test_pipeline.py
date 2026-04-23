@@ -55,6 +55,12 @@ detector = vision.PoseLandmarker.create_from_options(options)
 
 # ── Pass 1: collect detections ─────────────────────────────────────────────────
 def collect_detections(video_path: Path):
+    """
+    Pass 1: run YOLO/CSRT/MediaPipe on every frame and collect raw detections.
+
+    Returns (valid_indices, valid_features, landmark_coords, bbox_per_frame,
+             total_frames, fps, width, height).
+    """
     cap = cv2.VideoCapture(str(video_path))
     fps = cap.get(cv2.CAP_PROP_FPS) or 30
     w   = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -137,7 +143,11 @@ def collect_detections(video_path: Path):
 # ── Pass 2: render annotated video ─────────────────────────────────────────────
 def render_video(video_path, out_path, feature_arr, is_interpolated,
                  all_landmark_coords, bbox_per_frame, fps, w, h):
+    """
+    Pass 2: re-read the video and write an annotated mp4 with skeleton overlays and per-frame status labels.
 
+    Returns (n_detected, n_interpolated, n_dropped) frame counts.
+    """
     cap    = cv2.VideoCapture(str(video_path))
     writer = cv2.VideoWriter(str(out_path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
 
@@ -191,6 +201,7 @@ def render_video(video_path, out_path, feature_arr, is_interpolated,
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 def main():
+    """CLI entry point: run both pipeline passes on one video and print a detection summary."""
     video_path = Path(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_VIDEO)
     if not video_path.exists():
         print(f"Video not found: {video_path}")
