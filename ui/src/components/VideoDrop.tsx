@@ -36,9 +36,9 @@ export default function VideoDrop({ onAnalyze, isLoading }: VideoDropProps) {
     }
 
     return (
-        <section className="bg-background py-10 px-10">
-            <div className="max-w-5xl mx-auto">
-                <div className="bg-white rounded-2xl shadow-md p-10">
+        <section className="bg-background py-10 px-0 md:px-10">
+            <div className="md:max-w-5xl md:mx-auto">
+                <div className="bg-white rounded-none md:rounded-2xl shadow-md p-10">
                     <p className="text-secondary text-xs font-semibold tracking-widest uppercase mb-1">
                         UPLOAD
                     </p>
@@ -54,7 +54,7 @@ export default function VideoDrop({ onAnalyze, isLoading }: VideoDropProps) {
                         onDrop={handleDrop}
                         className={`
                             flex flex-col items-center justify-center gap-4
-                            border-2 border-dashed rounded-xl
+                            border-2 border-dashed rounded-none md:rounded-xl
                             cursor-pointer select-none
                             transition-colors duration-200
                             min-h-64 p-10

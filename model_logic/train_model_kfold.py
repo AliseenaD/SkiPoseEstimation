@@ -58,6 +58,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else
 
 # ── Reconstruct video → window mapping ─────────────────────────────────────────
 def assign_windows_to_videos(csv_path: Path) -> list[tuple[str, int]]:
+    """Reconstruct the ordered list of (video_name, label) pairs — one entry per sliding window — from features.csv."""
     df = pd.read_csv(csv_path)
     video_windows: list[tuple[str, int]] = []
 
@@ -123,6 +124,7 @@ class SkiClassifier(nn.Module):
       → Linear(32 → 3)      — raw logits (CrossEntropyLoss handles softmax)
     """
     def __init__(self, n_features: int = 27, n_classes: int = 3) -> None:
+        """BiLSTM → Dropout → Linear(ReLU) → Dropout → Linear classifier."""
         super().__init__()
         self.lstm  = nn.LSTM(n_features, 32, batch_first=True, bidirectional=True)
         self.drop1 = nn.Dropout(0.5)
@@ -132,6 +134,7 @@ class SkiClassifier(nn.Module):
         self.fc2   = nn.Linear(32, n_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Concatenate final hidden states from both LSTM directions and pass through the classifier head."""
         _, (h, _) = self.lstm(x)
         h = torch.cat([h[0], h[1]], dim=1)
         x = self.drop1(h)
@@ -147,6 +150,7 @@ def run_epoch(
     criterion: nn.Module,
     optimizer: torch.optim.Optimizer | None,
 ) -> tuple[float, float]:
+    """Run one training or validation epoch. Pass optimizer=None for eval mode. Returns (loss, accuracy)."""
     training = optimizer is not None
     model.train(training)
     total_loss, correct, n = 0.0, 0, 0
@@ -233,6 +237,7 @@ def train_fold(
 
 # ── Plotting ─────────────────────────────────────────────────────────────────────
 def plot_fold_curves(all_histories: list[list[dict]]) -> None:
+    """Plot per-fold train/val loss and accuracy curves and save to output/training_curves_kfold.png."""
     import matplotlib.pyplot as plt
 
     fig, (ax_loss, ax_acc) = plt.subplots(1, 2, figsize=(14, 5))
@@ -271,6 +276,7 @@ def plot_fold_curves(all_histories: list[list[dict]]) -> None:
 
 
 def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, title: str, save_name: str) -> None:
+    """Plot and save a labelled confusion matrix heatmap to output/<save_name>."""
     import matplotlib.pyplot as plt
 
     cm = np.zeros((len(CLASS_NAMES), len(CLASS_NAMES)), dtype=int)
@@ -303,6 +309,7 @@ def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, title: str, sa
 
 # ── Main ────────────────────────────────────────────────────────────────────────
 def main() -> None:
+    """Run 5-fold cross-validation, save the best-fold model and scalers, and plot training curves and confusion matrix."""
     print("Loading data …")
     X = np.load(OUTPUT_DIR / "X.npy")
     y = np.load(OUTPUT_DIR / "y.npy")

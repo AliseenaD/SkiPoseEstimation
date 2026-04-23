@@ -13,7 +13,7 @@ interface InstructionCardProps {
  */
 export default function InstructionCard({ svg, title, description }: InstructionCardProps) {
     return (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
+        <div className="bg-white rounded-none md:rounded-xl shadow-md overflow-hidden flex flex-col">
             <div className="h-1.5 bg-div-primary w-full" />
             <div className="p-7 flex flex-col gap-4">
                 <img src={svg} alt={title} className="w-10 h-10 object-contain" />

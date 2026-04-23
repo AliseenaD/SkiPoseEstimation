@@ -55,6 +55,7 @@ MAX_DISPLAY_H = 700                      # max height to show video (px)
 # ── Model definition (must match train_model.py) ─────────────────────────────────
 class SkiClassifier(nn.Module):
     def __init__(self, n_features: int = 27, n_classes: int = 3) -> None:
+        """BiLSTM → Dropout → Linear(ReLU) → Dropout → Linear classifier."""
         super().__init__()
         self.lstm  = nn.LSTM(n_features, 32, batch_first=True, bidirectional=True)
         self.drop1 = nn.Dropout(0.5)
@@ -64,6 +65,7 @@ class SkiClassifier(nn.Module):
         self.fc2   = nn.Linear(32, n_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Concatenate final hidden states from both LSTM directions and pass through the classifier head."""
         _, (h, _) = self.lstm(x)
         h = torch.cat([h[0], h[1]], dim=1)
         x = self.drop1(h)
@@ -397,6 +399,7 @@ def predict_video(video_path: str | Path) -> dict:
 
 # ── CLI ───────────────────────────────────────────────────────────────────────────
 def pick_file() -> Path | None:
+    """Open a Tkinter file-picker dialog and return the selected Path, or None if cancelled."""
     try:
         import tkinter as tk
         from tkinter import filedialog
@@ -414,6 +417,7 @@ def pick_file() -> Path | None:
 
 
 def main() -> None:
+    """CLI entry point: resolve video path, run the full pipeline, and open the results window."""
     if len(sys.argv) > 1:
         video_path = Path(sys.argv[1])
     else:
